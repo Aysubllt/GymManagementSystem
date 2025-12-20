@@ -1,0 +1,101 @@
+﻿@model GymManagementSystem.Models.Trainer
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow border-0">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-4 text-primary">
+                        <i class="bi bi-person-plus me-2"></i>@(Model?.Id > 0 ? "Antrenör Güncelle" : "Yeni Antrenör Ekle")
+                    </h4>
+                    <form asp-action="@(Model?.Id > 0 ? "Edit" : "Create")" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+                        @if(Model?.Id > 0) { <input type="hidden" asp-for="Id" /> }
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Atanacağı Salon</label>
+                            <select asp-for="GymId" class="form-select" asp-items="ViewBag.GymId">
+                                <option value="">-- Salon Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="GymId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label fw-bold"></label>
+                                <input asp-for="Name" class="form-control" placeholder="Ad Soyad" />
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Specialty" class="form-label fw-bold"></label>
+                                <input asp-for="Specialty" class="form-control" placeholder="Örn: Yoga, Fitness" />
+                                <span asp-validation-for="Specialty" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <h6 class="fw-bold text-success mb-3"><i class="bi bi-calendar-check me-2"></i>Mesai ve Müsaitlik Ayarları</h6>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="ShiftStartTime" class="form-label fw-bold">Mesai Başlangıç</label>
+                                <input asp-for="ShiftStartTime" type="time" class="form-control" />
+                                <span asp-validation-for="ShiftStartTime" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ShiftEndTime" class="form-label fw-bold">Mesai Bitiş</label>
+                                <input asp-for="ShiftEndTime" type="time" class="form-control" />
+                                <span asp-validation-for="ShiftEndTime" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 p-3 bg-light rounded border">
+                            <label class="form-label fw-bold mb-2">Çalışma Günleri</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <input type="checkbox" class="btn-check" asp-for="WorkMonday" id="btnPzt" autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm px-3" for="btnPzt">Pzt</label>
+
+                                <input type="checkbox" class="btn-check" asp-for="WorkTuesday" id="btnSal" autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm px-3" for="btnSal">Sal</label>
+
+                                <input type="checkbox" class="btn-check" asp-for="WorkWednesday" id="btnCar" autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm px-3" for="btnCar">Çar</label>
+
+                                <input type="checkbox" class="btn-check" asp-for="WorkThursday" id="btnPer" autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm px-3" for="btnPer">Per</label>
+
+                                <input type="checkbox" class="btn-check" asp-for="WorkFriday" id="btnCum" autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm px-3" for="btnCum">Cum</label>
+
+                                <input type="checkbox" class="btn-check" asp-for="WorkSaturday" id="btnCmt" autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm px-3" for="btnCmt">Cmt</label>
+
+                                <input type="checkbox" class="btn-check" asp-for="WorkSunday" id="btnPaz" autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm px-3" for="btnPaz">Paz</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Profil Fotoğrafı</label>
+                            <input type="file" name="ImageFile" class="form-control" accept="image/*" />
+                            @if (!string.IsNullOrEmpty(Model?.ImagePath))
+                            {
+                                <small class="text-muted">Mevcut görsel korunacak, değiştirmek için yeni dosya seçin.</small>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Bio" class="form-label fw-bold"></label>
+                            <textarea asp-for="Bio" class="form-control" rows="3" placeholder="Antrenör hakkında kısa bilgi..."></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">Kaydet</button>
+                            <a asp-action="Index" class="btn btn-light border">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

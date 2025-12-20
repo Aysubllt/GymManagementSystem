@@ -1,0 +1,23 @@
+﻿@model GymManagementSystem.Models.Trainer
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow border-0 text-center p-4">
+                <div class="text-danger mb-3">
+                    <i class="bi bi-exclamation-octagon" style="font-size: 4rem;"></i>
+                </div>
+                <h3 class="fw-bold">Antrenörü Sil?</h3>
+                <p class="text-muted"><strong>@Model.Name</strong> isimli antrenörü silmek üzeresiniz. Bu işlem ona bağlı randevuları da etkileyebilir.</p>
+                
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">Evet, Kaydını Sil</button>
+                        <a asp-action="Index" class="btn btn-light">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

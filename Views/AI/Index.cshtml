@@ -1,0 +1,152 @@
+﻿@model GymManagementSystem.Models.AIRecommendationViewModel
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 mb-4">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-dark text-warning p-4 border-0">
+                    <h3 class="mb-0 fw-bold"><i class="bi bi-robot me-2"></i>AI Fitness Asistanı</h3>
+                    <small class="text-white-50">Kişisel verilerinizi girerek size özel planı oluşturun.</small>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="GetRecommendation" method="post" id="aiForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Yaş</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0"><i class="bi bi-calendar-event"></i></span>
+                                    <input asp-for="Age" type="number" class="form-control border-0 bg-light" placeholder="25" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Cinsiyet</label>
+                                <select asp-for="Gender" class="form-select border-0 bg-light text-secondary">
+                                    <option value="Erkek">Erkek</option>
+                                    <option value="Kadın">Kadın</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Boy (cm)</label>
+                                <input asp-for="Height" type="number" class="form-control border-0 bg-light" placeholder="180" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Kilo (kg)</label>
+                                <input asp-for="Weight" type="number" class="form-control border-0 bg-light" placeholder="80" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Vücut Tipi</label>
+                                <select asp-for="BodyType" class="form-select border-0 bg-light text-secondary">
+                                    <option value="Ektomorf (Zayıf)">Ektomorf (Zayıf/Hızlı Metabolizma)</option>
+                                    <option value="Mezomorf (Atletik)">Mezomorf (Atletik/Kaslı Yapı)</option>
+                                    <option value="Endomorf (Geniş)">Endomorf (Geniş/Yavaş Metabolizma)</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Ana Hedefiniz</label>
+                                <select asp-for="Goal" class="form-select border-0 bg-light text-secondary">
+                                    <option value="Kilo Vermek">Yağ Yakımı ve Kilo Verme</option>
+                                    <option value="Kas Kütlesi Artırmak">Kas Kütlesi ve Hacim (Bulking)</option>
+                                    <option value="Kondisyon Kazanmak">Kondisyon ve Dayanıklılık</option>
+                                    <option value="Esneklik">Esneklik ve Mobilite</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-lg w-100 mt-4 fw-bold shadow-sm py-3 text-uppercase border-0 rounded-3">
+                            <span id="btnText">Programımı Oluştur</span>
+                            <span id="btnLoader" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            @if (Model?.Result != null)
+            {
+                <div class="card border-0 shadow-lg rounded-4 animate__animated animate__fadeInRight">
+                    <div class="card-header bg-warning text-dark p-4 border-0 d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0 fw-bold"><i class="bi bi-lightning-fill"></i> Sizin İçin Hazırlanan Plan</h4>
+                        <button class="btn btn-sm btn-outline-dark rounded-pill px-3" onclick="window.print()">
+                            <i class="bi bi-printer me-1"></i> Yazdır
+                        </button>
+                    </div>
+                    <div class="card-body p-4">
+                        <div id="markdownContent" class="d-none">@Model.Result</div>
+                        
+                        <div id="renderedResult" class="prose text-dark">
+                            </div>
+                    </div>
+                    <div class="card-footer bg-light border-0 p-3 text-center">
+                        <small class="text-muted italic"><i class="bi bi-info-circle me-1"></i> Bu program yapay zeka tarafından oluşturulmuştur. Uygulamadan önce bir uzmana danışın.</small>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="h-100 d-flex flex-column align-items-center justify-content-center text-center p-5 border-2 border-dashed border-secondary rounded-4 bg-white opacity-75">
+                    <i class="bi bi-stars display-1 text-warning mb-3"></i>
+                    <h4 class="text-secondary fw-bold">Henüz bir program oluşturulmadı</h4>
+                    <p class="text-muted">Formu doldurarak saniyeler içinde size özel egzersiz ve diyet önerileri alabilirsiniz.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <script>
+        // Form gönderilirken loader göster
+        document.getElementById('aiForm').addEventListener('submit', function() {
+            document.getElementById('btnText').innerText = "AI Planı Hazırlıyor...";
+            document.getElementById('btnLoader').classList.remove('d-none');
+            this.querySelector('button').classList.add('disabled');
+        });
+
+        // Sayfa yüklendiğinde Markdown verisini HTML'e çevir
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const content = document.getElementById('markdownContent');
+            const target = document.getElementById('renderedResult');
+            
+            if (content && target) {
+                // Marked.js ile çevir
+                target.innerHTML = marked.parse(content.innerText);
+            }
+        });
+    </script>
+
+    <style>
+        /* Markdown İçerik Stilleri */
+        #renderedResult h1, #renderedResult h2, #renderedResult h3 {
+            color: #212529;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #ffc107;
+            display: inline-block;
+        }
+        #renderedResult ul {
+            padding-left: 1.2rem;
+            list-style-type: none;
+        }
+        #renderedResult li {
+            position: relative;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+        }
+        #renderedResult li::before {
+            content: "➜";
+            position: absolute;
+            left: 0;
+            color: #ffc107;
+            font-weight: bold;
+        }
+        #renderedResult strong {
+            color: #000;
+            font-weight: 600;
+        }
+        .border-dashed { border-style: dashed !important; }
+    </style>
+}

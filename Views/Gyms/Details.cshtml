@@ -1,0 +1,66 @@
+﻿@model GymManagementSystem.Models.Gym
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-4 text-center p-4">
+                <div class="rounded-circle bg-primary text-white mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <i class="bi bi-buildings fs-1"></i>
+                </div>
+                <h4 class="fw-bold">@Model.Name</h4>
+                <p class="text-muted small"><i class="bi bi-geo-alt me-1"></i>@Model.Address</p>
+                
+                <div class="badge bg-warning text-dark py-2 px-3 fs-6">
+                    <i class="bi bi-clock me-2"></i>@Model.OpeningTime.ToString(@"hh\:mm") - @Model.ClosingTime.ToString(@"hh\:mm")
+                </div>
+
+                <div class="mt-4 d-grid gap-2">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm">Düzenle</a>
+                    }
+                    <a asp-action="Index" class="btn btn-light btn-sm">Geri Dön</a>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 p-3">
+                <h6 class="fw-bold mb-3">Çalışma Günleri</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge @(Model.OpenMonday ? "bg-success" : "bg-light text-muted")">Pzt</span>
+                    <span class="badge @(Model.OpenTuesday ? "bg-success" : "bg-light text-muted")">Sal</span>
+                    <span class="badge @(Model.OpenWednesday ? "bg-success" : "bg-light text-muted")">Çar</span>
+                    <span class="badge @(Model.OpenThursday ? "bg-success" : "bg-light text-muted")">Per</span>
+                    <span class="badge @(Model.OpenFriday ? "bg-success" : "bg-light text-muted")">Cum</span>
+                    <span class="badge @(Model.OpenSaturday ? "bg-success" : "bg-light text-muted")">Cmt</span>
+                    <span class="badge @(Model.OpenSunday ? "bg-success" : "bg-light text-muted")">Paz</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3"><h5 class="mb-0 fw-bold"><i class="bi bi-stars me-2 text-warning"></i>Sunulan Hizmetler</h5></div>
+                <div class="card-body">
+                    @if (Model.Services != null && Model.Services.Any()) {
+                        <div class="list-group list-group-flush">
+                            @foreach (var svc in Model.Services) {
+                                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-dark">@svc.Name</h6>
+                                        <small class="text-muted">Seans Süresi: @svc.DurationMinutes dk</small>
+                                    </div>
+                                    <span class="h6 mb-0 text-success fw-bold">@svc.Price.ToString("C2")</span>
+                                </div>
+                            }
+                        </div>
+                    } else {
+                        <div class="text-center py-5">
+                            <i class="bi bi-info-circle fs-1 text-muted"></i>
+                            <p class="mt-2 text-muted">Bu salona henüz bir hizmet tanımlanmamış.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

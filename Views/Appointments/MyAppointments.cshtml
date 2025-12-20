@@ -1,0 +1,60 @@
+﻿@model IEnumerable<GymManagementSystem.Models.Appointment>
+
+<div class="container mt-4">
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-person-workspace me-2"></i>Randevularım</h5>
+            <a asp-action="Book" class="btn btn-light btn-sm fw-bold text-primary">Yeni Randevu Al</a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr class="text-muted small text-uppercase">
+                            <th class="ps-4">Hizmet / Antrenör</th>
+                            <th>Zaman</th>
+                            <th>Süre & Ücret</th>
+                            <th>Durum</th>
+                            <th class="text-end pe-4">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="fw-bold text-primary">@item.Service?.Name</div>
+                                    <div class="small text-muted">Antrenör: @item.Trainer?.Name</div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">@item.AppointmentDate.ToString("dd MMMM yyyy")</div>
+                                    <div class="small">@item.AppointmentDate.ToString("HH:mm")</div>
+                                </td>
+                                <td>
+                                    <div>@item.Service?.DurationMinutes dk</div>
+                                    <div class="fw-bold text-success">@item.Service?.Price.ToString("C2")</div>
+                                </td>
+                                <td>
+                                    @if (item.IsConfirmed) {
+                                        <span class="badge rounded-pill bg-success-subtle text-success px-3">Onaylandı</span>
+                                    } else {
+                                        <span class="badge rounded-pill bg-warning-subtle text-warning px-3">Beklemede</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <a asp-action="Cancel" asp-route-id="@item.Id" class="btn btn-link text-danger p-0" 
+                                       onclick="return confirm('Randevunuzu iptal etmek istiyor musunuz?')">İptal Et</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (!Model.Any()) {
+                <div class="text-center py-5">
+                    <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                    <p class="mt-2 text-muted">Henüz bir randevunuz bulunmuyor.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

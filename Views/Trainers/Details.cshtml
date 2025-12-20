@@ -1,0 +1,60 @@
+﻿@model GymManagementSystem.Models.Trainer
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-md-4 bg-light text-center py-5 border-end">
+                        <img src="@(string.IsNullOrEmpty(Model.ImagePath) ? "/images/default-user.png" : Model.ImagePath)" 
+                             class="rounded-circle shadow-sm mb-3 border border-4 border-white" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h5 class="fw-bold mb-1">@Model.Name</h5>
+                        <p class="badge bg-primary px-3">@Model.Specialty</p>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body p-4">
+                            <h5 class="border-bottom pb-2 mb-3 fw-bold text-muted">Profil Bilgileri</h5>
+                            
+                            <div class="mb-3">
+                                <label class="text-muted small d-block">Çalıştığı Salon</label>
+                                <span class="h6"><i class="bi bi-geo-alt text-danger me-1"></i> @(Model.Gym?.Name ?? "Atanmamış")</span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="text-muted small d-block">Günlük Mesai</label>
+                                <span class="h6"><i class="bi bi-clock text-success me-1"></i> 
+                                    @Model.ShiftStartTime.ToString(@"hh\:mm") - @Model.ShiftEndTime.ToString(@"hh\:mm")
+                                </span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="text-muted small d-block mb-1">Çalışma Günleri</label>
+                                <div class="d-flex gap-1">
+                                    <span class="badge @(Model.WorkMonday ? "bg-success" : "bg-light text-muted")">Pzt</span>
+                                    <span class="badge @(Model.WorkTuesday ? "bg-success" : "bg-light text-muted")">Sal</span>
+                                    <span class="badge @(Model.WorkWednesday ? "bg-success" : "bg-light text-muted")">Çar</span>
+                                    <span class="badge @(Model.WorkThursday ? "bg-success" : "bg-light text-muted")">Per</span>
+                                    <span class="badge @(Model.WorkFriday ? "bg-success" : "bg-light text-muted")">Cum</span>
+                                    <span class="badge @(Model.WorkSaturday ? "bg-success" : "bg-light text-muted")">Cmt</span>
+                                    <span class="badge @(Model.WorkSunday ? "bg-success" : "bg-light text-muted")">Paz</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="text-muted small d-block">Hakkında</label>
+                                <p class="text-dark">@(string.IsNullOrEmpty(Model.Bio) ? "Bilgi girilmemiş." : Model.Bio)</p>
+                            </div>
+
+                            <div class="d-flex gap-2 border-top pt-3">
+                                @if (User.IsInRole("Admin")) {
+                                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-4 shadow-sm">Düzenle</a>
+                                }
+                                <a asp-action="Index" class="btn btn-outline-secondary px-4">Geri Dön</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

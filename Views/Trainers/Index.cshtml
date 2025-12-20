@@ -1,0 +1,59 @@
+﻿@model IEnumerable<GymManagementSystem.Models.Trainer>
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-person-badge me-2 text-primary"></i>Antrenör Kadromuz</h5>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Create" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg me-1"></i>Yeni Antrenör Ekle</a>
+            }
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Antrenör</th>
+                            <th>Uzmanlık</th>
+                            <th>Çalıştığı Salon</th>
+                            <th>Mesai Saatleri</th>
+                            <th class="text-end pe-4">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <img src="@(string.IsNullOrEmpty(item.ImagePath) ? "/images/default-user.png" : item.ImagePath)" 
+                                             class="rounded-circle me-3 border shadow-sm" style="width: 45px; height: 45px; object-fit: cover;" alt="trainer">
+                                        <span class="fw-bold text-dark">@item.Name</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-light text-primary border border-primary px-2 py-1">@item.Specialty</span></td>
+                                <td><i class="bi bi-buildings me-1 text-muted small"></i> @(item.Gym?.Name ?? "Belirtilmemiş")</td>
+                                <td>
+                                    <span class="small fw-semibold">
+                                        <i class="bi bi-clock-history me-1 text-success"></i>
+                                        @item.ShiftStartTime.ToString(@"hh\:mm") - @item.ShiftEndTime.ToString(@"hh\:mm")
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4 text-nowrap">
+                                    <div class="btn-group">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Detaylar"><i class="bi bi-eye"></i></a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning" title="Düzenle"><i class="bi bi-pencil"></i></a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Sil"><i class="bi bi-trash"></i></a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

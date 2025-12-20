@@ -1,0 +1,32 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "E-posta Doğrulama";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card shadow-lg border-0 rounded-4 p-5">
+                
+                <div class="mb-4">
+                    <i class="bi bi-patch-check-fill text-success display-1"></i>
+                </div>
+
+                <h2 class="fw-bold text-dark">E-Posta Onaylandı</h2>
+                <hr class="w-25 mx-auto mb-4" />
+
+                <div class="alert alert-success border-0 shadow-sm py-3 mb-4">
+                    <i class="bi bi-check-circle-fill me-2"></i> 
+                    E-posta adresiniz başarıyla doğrulandı. Artık SAU GYM üyesi olarak giriş yapabilirsiniz!
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a asp-page="./Login" class="btn btn-warning btn-lg fw-bold shadow-sm py-3 text-uppercase text-dark">
+                        GİRİŞ SAYFASINA GİT <i class="bi bi-box-arrow-in-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

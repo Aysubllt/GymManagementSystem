@@ -1,0 +1,7 @@
+# Visual Studio geçici dosyalarý
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.unsuccessfulbuild

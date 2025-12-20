@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Gizlilik Politikası";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="bg-secondary p-4 text-white">
+                    <h1 class="h3 mb-0"><i class="bi bi-shield-lock me-2"></i>@ViewData["Title"]</h1>
+                </div>
+                <div class="card-body p-4 p-lg-5">
+                    <p class="lead">Bu sayfa, GymManagementSystem'in kullanıcı verilerini nasıl topladığını ve koruduğunu açıklar.</p>
+                    
+                    <h5 class="fw-bold mt-4">1. Veri Toplama</h5>
+                    <p class="text-muted">Üyelik ve randevu işlemleri sırasında sağladığınız bilgiler (ad, soyad, e-posta) sistemin düzgün çalışması için sunucularımızda saklanır.</p>
+
+                    <h5 class="fw-bold mt-4">2. Veri Kullanımı</h5>
+                    <p class="text-muted">Randevu onayları ve hizmet bilgilendirmeleri dışında verileriniz asla üçüncü taraflarla paylaşılmaz.</p>
+
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-info-circle me-2"></i> Sorularınız için yönetici paneli üzerinden bizimle iletişime geçebilirsiniz.
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a asp-action="Index" class="btn btn-light"><i class="bi bi-arrow-left"></i> Ana Sayfaya Dön</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

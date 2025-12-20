@@ -1,0 +1,32 @@
+﻿@page
+@model LoginWithRecoveryCodeModel
+@{
+    ViewData["Title"] = "Kurtarma Kodu";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-life-preserver text-danger display-4 mb-2"></i>
+                        <h3 class="fw-bold">Kurtarma Kodu</h3>
+                        <p class="text-muted small">Lütfen sakladığınız yedek kurtarma kodlarından birini girin.</p>
+                    </div>
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.RecoveryCode" class="form-control text-center fw-bold" autocomplete="off" placeholder="Kod" />
+                            <label asp-for="Input.RecoveryCode">Kurtarma Kodunuz</label>
+                            <span asp-validation-for="Input.RecoveryCode" class="text-danger small"></span>
+                        </div>
+                        <button type="submit" class="btn btn-dark btn-lg w-100 fw-bold py-3">GİRİŞ YAP</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

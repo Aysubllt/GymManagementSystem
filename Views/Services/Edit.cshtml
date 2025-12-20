@@ -1,0 +1,52 @@
+﻿@model GymManagementSystem.Models.Service
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4 fw-bold text-warning">
+                        <i class="bi bi-pencil-square me-2"></i>Hizmet Paketini Güncelle
+                    </h4>
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Bağlı Olduğu Salon</label>
+                            <select asp-for="GymId" class="form-select border-warning" asp-items="ViewBag.GymId"></select>
+                            <span asp-validation-for="GymId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-bold">Hizmet Adı</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DurationMinutes" class="form-label fw-bold">Süre (Dakika)</label>
+                                <input asp-for="DurationMinutes" class="form-control" type="number" />
+                                <span asp-validation-for="DurationMinutes" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Price" class="form-label fw-bold">Ücret (₺)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₺</span>
+                                    <input asp-for="Price" class="form-control" />
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-warning fw-bold">Değişiklikleri Kaydet</button>
+                            <a asp-action="Index" class="btn btn-light">Vazgeç</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

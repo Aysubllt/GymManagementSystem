@@ -1,0 +1,226 @@
+﻿@{
+    ViewData["Title"] = "Sistem Raporları";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3 animate__animated animate__fadeIn">
+        <div>
+            <h2 class="fw-bold text-dark mb-0">
+                <i class="bi bi-graph-up-arrow me-2 text-warning"></i>Sistem Analiz Raporları
+            </h2>
+            <p class="text-muted mb-0">Veritabanı üzerinden gerçek zamanlı veriler</p>
+        </div>
+        <div class="d-flex align-items-center gap-2 bg-white p-2 rounded-3 shadow-sm border">
+            <label for="reportDate" class="ms-2 mb-0 fw-medium small text-muted text-uppercase">Tarih:</label>
+            <input type="date" id="reportDate" class="form-control border-0 fw-bold text-primary shadow-none" 
+                   value="@DateTime.Now.ToString("yyyy-MM-dd")">
+            <button onclick="refreshAll()" class="btn btn-light btn-sm rounded-2 text-primary" title="Yenile">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 stat-card orange">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted text-uppercase small fw-bold">Toplam Kazanç</h6>
+                            <h2 class="fw-bold mb-0" id="statRevenue">0₺</h2>
+                        </div>
+                        <div class="stat-icon bg-light-warning">
+                            <i class="bi bi-cash-coin fs-3 text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 stat-card blue">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted text-uppercase small fw-bold">Toplam Randevu</h6>
+                            <h2 class="fw-bold mb-0" id="statTotal">0</h2>
+                        </div>
+                        <div class="stat-icon bg-light-info">
+                            <i class="bi bi-calendar-event fs-3 text-info"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 stat-card green">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted text-uppercase small fw-bold">Popüler Hizmet</h6>
+                            <h2 class="fw-bold mb-0 text-truncate" id="statPopular" style="max-width: 180px;">-</h2>
+                        </div>
+                        <div class="stat-icon bg-light-success">
+                            <i class="bi bi-star-fill fs-3 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden animate__animated animate__fadeInUp">
+        <div class="card-header bg-dark py-3 d-flex justify-content-between align-items-center border-0">
+            <h5 class="mb-0 text-white fw-bold"><i class="bi bi-table me-2"></i>Günlük Randevu Listesi</h5>
+            <span class="badge bg-warning text-dark px-3 py-2 fw-bold" id="reportDateBadge">
+                @DateTime.Now.ToShortDateString()
+            </span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 text-muted small text-uppercase">Saat</th>
+                        <th class="text-muted small text-uppercase">Eğitmen</th>
+                        <th class="text-muted small text-uppercase">Hizmet / Paket</th>
+                        <th class="text-muted small text-uppercase">Ücret</th>
+                        <th class="text-muted small text-uppercase">Durum</th>
+                        <th class="text-end pe-4 text-muted small text-uppercase">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Para birimi formatlayıcı
+        const currencyFormatter = new Intl.NumberFormat('tr-TR', {
+            style: 'currency',
+            currency: 'TRY',
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            refreshAll();
+
+            document.getElementById("reportDate").addEventListener("change", function() {
+                loadDailyReport(this.value);
+                document.getElementById("reportDateBadge").innerText = new Date(this.value).toLocaleDateString('tr-TR');
+            });
+        });
+
+        function refreshAll() {
+            const date = document.getElementById("reportDate").value;
+            loadGeneralStats();
+            loadDailyReport(date);
+        }
+
+        // 1. Genel İstatistikler (Async/Await)
+        async function loadGeneralStats() {
+            try {
+                const response = await fetch('/api/ReportsApi/stats');
+                if (!response.ok) throw new Error("API hatası");
+                
+                const data = await response.json();
+                
+                document.getElementById("statRevenue").innerText = currencyFormatter.format(data.totalRevenue);
+                document.getElementById("statTotal").innerText = data.totalAppointments;
+                document.getElementById("statPopular").innerText = data.popularService;
+            } catch (err) {
+                console.error("İstatistik Hatası:", err);
+            }
+        }
+
+        // 2. Günlük Randevu Raporu
+        async function loadDailyReport(date) {
+            const tableBody = document.getElementById("reportTableBody");
+            
+            // Yükleniyor durumu
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-5">
+                        <div class="spinner-border text-warning spinner-border-sm" role="status"></div>
+                        <span class="ms-2 text-muted">Yükleniyor...</span>
+                    </td>
+                </tr>`;
+
+            try {
+                const response = await fetch(`/api/ReportsApi/daily/${date}`);
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="bi bi-calendar-x fs-2 d-block mb-2 text-light"></i>
+                                Bu tarihte randevu bulunmuyor.
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                tableBody.innerHTML = data.map(item => `
+                    <tr class="animate__animated animate__fadeIn">
+                        <td class="ps-4 fw-bold text-primary">${item.time}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-circle me-2">${item.trainerName.charAt(0)}</div>
+                                <span class="fw-medium">${item.trainerName}</span>
+                            </div>
+                        </td>
+                        <td><span class="text-dark">${item.serviceName}</span></td>
+                        <td class="fw-bold">${currencyFormatter.format(item.price)}</td>
+                        <td>
+                            <span class="badge rounded-pill ${item.isConfirmed ? 'bg-success-subtle text-success' : 'bg-warning-subtle text-warning-emphasis'} px-3">
+                                ${item.isConfirmed ? 'Onaylandı' : 'Beklemede'}
+                            </span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-link text-muted p-0" data-bs-toggle="dropdown">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                    <li><a class="dropdown-item small" href="#"><i class="bi bi-eye me-2"></i>Detay</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (err) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Veri yüklenirken bir hata oluştu.</td></tr>`;
+            }
+        }
+    </script>
+
+    <style>
+        /* Modern Renk Paleti ve Kartlar */
+        .stat-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-left: 4px solid transparent !important; }
+        .stat-card:hover { transform: translateY(-5px); }
+        
+        .stat-card.orange { border-left-color: #ffc107 !important; }
+        .stat-card.blue { border-left-color: #0dcaf0 !important; }
+        .stat-card.green { border-left-color: #198754 !important; }
+
+        .bg-light-warning { background: #fff8e1; }
+        .bg-light-info { background: #e0f7fa; }
+        .bg-light-success { background: #e8f5e9; }
+
+        .stat-icon { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+
+        .avatar-circle {
+            width: 32px; height: 32px; background: #6c757d; color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: bold;
+        }
+
+        .bg-success-subtle { background-color: #d1e7dd; }
+        .bg-warning-subtle { background-color: #fff3cd; }
+
+        #reportDate { cursor: pointer; }
+        #reportDate:hover { background-color: #f1f3f5; }
+    </style>
+}

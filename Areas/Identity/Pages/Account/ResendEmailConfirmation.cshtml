@@ -1,0 +1,28 @@
+﻿@page
+@model ResendEmailConfirmationModel
+@{
+    ViewData["Title"] = "Onay E-postasını Yeniden Gönder";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold text-center mb-4">Onay Kodu Gönder</h3>
+                    <form method="post">
+                        <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.Email" class="form-control" placeholder="E-posta" />
+                            <label asp-for="Input.Email">E-posta Adresiniz</label>
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold py-3 border-dark border-2">YENİDEN GÖNDER</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

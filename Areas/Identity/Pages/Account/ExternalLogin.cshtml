@@ -1,0 +1,34 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Kayıt Tamamlama";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-dark text-white text-center py-4">
+                    <h3 class="fw-bold mb-0">SON ADIM</h3>
+                    <p class="text-white-50 small mb-0">@Model.ProviderDisplayName hesabın başarıyla bağlandı.</p>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <p class="text-muted small text-center mb-4">
+                        Kaydı tamamlamak için lütfen sitemizde kullanacağın e-posta adresini onayla.
+                    </p>
+                    <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.Email" class="form-control" placeholder="E-posta" />
+                            <label asp-for="Input.Email">E-posta Adresi</label>
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold py-3">KAYDI BİTİR</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

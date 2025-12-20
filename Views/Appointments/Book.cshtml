@@ -1,0 +1,67 @@
+﻿@model GymManagementSystem.Models.Appointment
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-success text-white py-3 text-center">
+                    <h4 class="mb-0 fw-bold"><i class="bi bi-calendar-check me-2"></i>Randevu Al</h4>
+                    <p class="small mb-0 text-white-50">Antrenörünüzü ve saatinizi seçin</p>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Book" method="post">
+                        <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="TrainerId" class="form-label fw-bold text-muted"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-person-badge"></i></span>
+                                <select asp-for="TrainerId" class="form-select border-start-0" asp-items="ViewBag.TrainerId">
+                                    <option value="">-- Antrenör Seçin --</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="TrainerId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ServiceId" class="form-label fw-bold text-muted"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-tags"></i></span>
+                                <select asp-for="ServiceId" class="form-select border-start-0" asp-items="ViewBag.ServiceId">
+                                    <option value="">-- Hizmet Seçin --</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="ServiceId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="AppointmentDate" class="form-label fw-bold text-muted"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-clock"></i></span>
+                                <input asp-for="AppointmentDate" class="form-control border-start-0" type="datetime-local" />
+                            </div>
+                            <span asp-validation-for="AppointmentDate" class="text-danger small"></span>
+                            <small class="text-muted mt-2 d-block bg-light p-2 rounded border">
+                                <i class="bi bi-info-circle-fill text-primary me-1"></i> 
+                                Randevu almadan önce antrenörün profilinden çalışma saatlerini kontrol etmeyi unutmayın.
+                            </small>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg shadow">
+                                <i class="bi bi-check2-circle me-1"></i>Randevuyu Oluştur
+                            </button>
+                            <a asp-action="MyAppointments" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Randevularıma Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

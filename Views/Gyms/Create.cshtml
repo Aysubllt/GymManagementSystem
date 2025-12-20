@@ -1,0 +1,86 @@
+﻿@model GymManagementSystem.Models.Gym
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4 fw-bold text-primary">
+                        <i class="bi bi-pencil-square me-2"></i>@(Model?.Id > 0 ? "Salonu Güncelle" : "Yeni Salon Ekle")
+                    </h4>
+                    
+                    <form asp-action="@(Model?.Id > 0 ? "Edit" : "Create")">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        @if(Model?.Id > 0) { <input type="hidden" asp-for="Id" /> }
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-bold"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Salon adını giriniz" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label fw-bold"></label>
+                            <textarea asp-for="Address" class="form-control" rows="2" placeholder="Tam adres bilgisini giriniz"></textarea>
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+
+                        <hr />
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-clock me-2"></i>Çalışma Saatleri ve Günler</h6>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="OpeningTime" class="form-label fw-bold"></label>
+                                <input asp-for="OpeningTime" type="time" class="form-control" />
+                                <span asp-validation-for="OpeningTime" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ClosingTime" class="form-label fw-bold"></label>
+                                <input asp-for="ClosingTime" type="time" class="form-control" />
+                                <span asp-validation-for="ClosingTime" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold d-block">Hizmet Verilen Günler</label>
+                            <div class="d-flex flex-wrap gap-3 p-3 bg-light rounded border">
+                                <div class="form-check">
+                                    <input asp-for="OpenMonday" class="form-check-input" /> <label class="form-check-label">Pzt</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="OpenTuesday" class="form-check-input" /> <label class="form-check-label">Sal</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="OpenWednesday" class="form-check-input" /> <label class="form-check-label">Çar</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="OpenThursday" class="form-check-input" /> <label class="form-check-label">Per</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="OpenFriday" class="form-check-input" /> <label class="form-check-label">Cum</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="OpenSaturday" class="form-check-input" /> <label class="form-check-label">Cmt</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="OpenSunday" class="form-check-input" /> <label class="form-check-label">Paz</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg shadow">
+                                <i class="bi bi-save me-1"></i>Değişiklikleri Kaydet
+                            </button>
+                            <a asp-action="Index" class="btn btn-link text-secondary text-decoration-none text-center">İptal Et ve Listeye Dön</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

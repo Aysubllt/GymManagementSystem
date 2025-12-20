@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="p-5 mb-4 bg-dark text-white rounded-3 shadow-lg" 
+     style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+    <div class="container-fluid py-5 text-center">
+        <h1 class="display-4 fw-bold text-uppercase">Güç Sende, Kontrol Bizde!</h1>
+        <p class="fs-4">GymManagementSystem ile randevularını yönet, antrenörünle iletişime geç ve gelişimini takip et.</p>
+        <div class="mt-4">
+            <a asp-controller="Appointments" asp-action="Book" class="btn btn-primary btn-lg px-5 shadow">Hemen Randevu Al</a>
+            <a asp-controller="Trainers" asp-action="Index" class="btn btn-outline-light btn-lg px-5 ms-2 shadow">Ekipten Bilgi Al</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row text-center mt-n5">
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body py-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-block p-3 mb-3">
+                        <i class="bi bi-buildings fs-1 text-primary"></i>
+                    </div>
+                    <h2 class="fw-bold">@ViewBag.GymCount</h2>
+                    <p class="text-muted text-uppercase mb-0">Aktif Salonumuz</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100 border-bottom border-primary border-4">
+                <div class="card-body py-4">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-block p-3 mb-3">
+                        <i class="bi bi-person-check fs-1 text-success"></i>
+                    </div>
+                    <h2 class="fw-bold">@ViewBag.TrainerCount</h2>
+                    <p class="text-muted text-uppercase mb-0">Uzman Antrenör</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body py-4">
+                    <div class="bg-warning bg-opacity-10 rounded-circle d-inline-block p-3 mb-3">
+                        <i class="bi bi-award fs-1 text-warning"></i>
+                    </div>
+                    <h2 class="fw-bold">@ViewBag.ServiceCount</h2>
+                    <p class="text-muted text-uppercase mb-0">Hizmet Paketi</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="fw-bold mb-4">Hızlı Erişim</h4>
+            <div class="list-group list-group-horizontal-md shadow-sm">
+                <a asp-controller="Gyms" asp-action="Index" class="list-group-item list-group-item-action py-3 text-center border-0">
+                    <i class="bi bi-geo-alt-fill d-block fs-4 mb-1"></i> Salonları Keşfet
+                </a>
+                <a asp-controller="Services" asp-action="Index" class="list-group-item list-group-item-action py-3 text-center border-0 border-start">
+                    <i class="bi bi-lightning-charge-fill d-block fs-4 mb-1 text-warning"></i> Paketleri İncele
+                </a>
+                <a asp-controller="Appointments" asp-action="MyAppointments" class="list-group-item list-group-item-action py-3 text-center border-0 border-start">
+                    <i class="bi bi-clock-history d-block fs-4 mb-1 text-info"></i> Randevularım
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
